@@ -13,25 +13,23 @@ mayor de edad pero menor de 25 años y falso en caso contrario.
 cuenta. 
 
 
-NOTA: Encuentro un error en el enunciado, el método retirar dinero debería funcionar siempre, porque la clase sólo debería dejar 
-instanciar titulares válidos.
-Por agrego el atributo edad a la clase, permito un SETTER pues año a año cambia y llegará el momento que se pase de 25 años y deje de ser válido
-
+NOTA: No permito instanciar la clase si no está entre los 18 y 25 años, pero los que ya instancié pueder ir cumpliendo años hasta
+pasar los 25, en ese caso se hacen "inválidos". Para ello agregué el método, cumple_anios() para simular esta situación.
+También hay validaciones para que cuando el titular no sea válido que no tenga bonificación.
 
 '''
 
 from Ej7 import Cuenta
 
 class CuentaJoven(Cuenta):
-    def __init__(self, titular='', cantidad=0.0, bonificacion=0.0, edad=18):     # Haría falta un try/except y validar los datos como en los SETTERS
+    def __init__(self, titular='', cantidad=0.0, bonificacion=0, edad=18):     # Haría falta un try/except y validar los datos como en los SETTERS
         if edad < 18 or edad > 25:
             raise ValueError("La edad debe estar entre 18 y 25 años")
         
         super().__init__(titular, cantidad)
+        #self.__cantidad = float(cantidad)                            # Tuve que agregar esta línea porque no me lo reconocía.
         self.__bonificacion = int(bonificacion)                      # Tener cuidado que es un porcentaje expresado con un int
         self.__edad = int(edad)
-        
-
     
     # GETTERS
     @property               
@@ -59,51 +57,64 @@ class CuentaJoven(Cuenta):
         except ValueError:
             print('ValueError: Debe ingresar un valor numerico entero')
 
-    @edad.setter
-    def edad(self, nueva_edad):
-        try:
-            nueva_edad = int(nueva_edad)
-            if nueva_edad >= 18 and nueva_edad <=25:
-                self.__edad = nueva_edad
-            else:
-                self.__edad = nueva_edad
-                self.__bonificacion = 0
-                print("Esta persona ya no cumple los requisitos de la Cuenta Joven, su bonificación quedará en 0")
-
-        except ValueError:
-            print('ValueError: Debe ingresar un valor numerico entero')    
-
+    # No coloco un Setter para la edad, porque tengo algo similar a un Setter que es el método cumple_anios() 
 
     # Sobreescritura de los métodos mostrar(), ingresar() y retirar() - Polimorfismo
     def mostrar(self):
         print(f'CUENTA JOVEN, {super().__str__()}, Edad: {self.__edad}, Bonificación: {self.__bonificacion}')        
+        #print(f'CUENTA JOVEN, Titular: {self.titular}, Cantidad: {self.__cantidad}, Edad: {self.__edad}, Bonificación: {self.__bonificacion}')
 
-    #TODO: verificar si es válido el titular
+    # Es titular válido
+    def es_titular_valido(self):
+        if self.__edad >= 18 and self.__edad <=25:
+            return True
+        else:
+            return False
+    
+    def cumple_anios(self):
+        self.__edad += 1
+
     def ingresar(self, ingreso):
-        cantidad=float(ingreso)
-        if ingreso >= 0 and ingreso <= 100000:
-            self.__cantidad += ingreso
+        ingreso=float(ingreso)
+        if (ingreso >= 0 and ingreso <= 100000):
+            print(type(super().cantidad))
+            print(type(ingreso))
+            #super().cantidad += ingreso                # No puedo cambiarlo!
         else:
             print("Debe ingresar un valor positivo entre 0 y 100000")
 
-    #TODO: verificar si es válido el titular
+
     def retirar(self, retiro):
-        cantidad=float(retiro)
-        if retiro >= 0 and retiro <= 100000:
-            self.__cantidad -= retiro
+        retiro=float(retiro)
+        if self.es_titular_valido():
+            if (retiro >= 0 and retiro <= 100000):
+                #self.__cantidad -= retiro              # Tampoco me funciona
+                pass              
+            else:
+                print("Debe ingresar un valor positivo entre 0 y 100000")
         else:
-            print("Debe ingresar un valor positivo entre 0 y 100000")
+            print("El titular no es válido. No puede retirar dinero")
 
 def main():
 
     # Pruebo instanciar objetos
-
     joven1 = CuentaJoven("Pedro", 2300, 50, 25)
     joven1.mostrar()
-
-    joven1.bonificacion = 20
-    joven1.edad = 30
+    joven1.bonificacion = 25
+    joven1.ingresar(1000)
     joven1.mostrar()
+    joven1.retirar(1000)
+    joven1.mostrar()
+
+    joven1.cumple_anios()
+    joven1.mostrar()
+    joven1.bonificacion = 25
+    joven1.mostrar()
+    joven1.ingresar(1000)
+    joven1.mostrar()
+    joven1.retirar(1000)
+    joven1.mostrar()
+
 
 # Para que sólo se ejecute si estoy en este mismo archivo y no cuando lo utilice como módulo
 if __name__ == '__main__':

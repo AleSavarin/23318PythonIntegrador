@@ -21,14 +21,25 @@ class Cuenta():
     # GETTERS
     @property               
     def titular(self):
-        return f'Titular: {self.__titular}'
+        return self.__titular
     
     @property               
     def cantidad(self):
-        return f'Cantidad: {self.__cantidad}'
+        return float(self.__cantidad)
 
     # SETTERS
-    # No se definen debido a que los atributos no son modificables
+    # Defino este SETTER para el Ej8
+    @cantidad.setter
+    def cantidad(self,nueva_cantidad):
+        try:
+            nueva_cantidad=float(nueva_cantidad)
+            if nueva_cantidad >= 0 and nueva_cantidad <= 100000:
+                self.__cantidad = nueva_cantidad
+            else:
+                print("Debe ingresar un valor entre 0 y 100000")
+
+        except ValueError:
+            print('ValueError: Debe ingresar un valor numerico')
 
 
     # Métodos de INSTANCIA
@@ -36,14 +47,14 @@ class Cuenta():
         print(f'Titular: {self.__titular}, Cantidad: {self.__cantidad}')
 
     def ingresar(self, ingreso):
-        cantidad=float(ingreso)
+        ingreso=float(ingreso)
         if ingreso >= 0 and ingreso <= 100000:
             self.__cantidad += ingreso
         else:
             print("Debe ingresar un valor positivo entre 0 y 100000")
 
     def retirar(self, retiro):
-        cantidad=float(retiro)
+        ingreso=float(retiro)
         if retiro >= 0 and retiro <= 100000:
             self.__cantidad -= retiro
         else:
