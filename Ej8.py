@@ -77,9 +77,7 @@ class CuentaJoven(Cuenta):
     def ingresar(self, ingreso):
         ingreso=float(ingreso)
         if (ingreso >= 0 and ingreso <= 100000):
-            print(type(super().cantidad))
-            print(type(ingreso))
-            #super().cantidad += ingreso                # No puedo cambiarlo!
+            self._cantidad += ingreso                # No puedo cambiarlo!
         else:
             print("Debe ingresar un valor positivo entre 0 y 100000")
 
@@ -88,7 +86,7 @@ class CuentaJoven(Cuenta):
         retiro=float(retiro)
         if self.es_titular_valido():
             if (retiro >= 0 and retiro <= 100000):
-                #self.__cantidad -= retiro              # Tampoco me funciona
+                self._cantidad -= retiro              # Tampoco me funciona
                 pass              
             else:
                 print("Debe ingresar un valor positivo entre 0 y 100000")

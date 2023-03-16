@@ -14,18 +14,18 @@ rojos.
 
 class Cuenta():
     def __init__(self, titular='', cantidad=0.0):       # Haría falta un try/except y validar los datos como en los SETTERS
-        self.__titular = titular
-        self.__cantidad = float(cantidad)               
+        self._titular = titular
+        self._cantidad = float(cantidad)               
 
 
     # GETTERS
     @property               
     def titular(self):
-        return self.__titular
+        return self._titular
     
     @property               
     def cantidad(self):
-        return float(self.__cantidad)
+        return float(self._cantidad)
 
     # SETTERS
     # Defino este SETTER para el Ej8
@@ -44,24 +44,24 @@ class Cuenta():
 
     # Métodos de INSTANCIA
     def mostrar(self):
-        print(f'Titular: {self.__titular}, Cantidad: {self.__cantidad}')
+        print(f'Titular: {self._titular}, Cantidad: {self._cantidad}')
 
     def ingresar(self, ingreso):
         ingreso=float(ingreso)
         if ingreso >= 0 and ingreso <= 100000:
-            self.__cantidad += ingreso
+            self._cantidad += ingreso
         else:
             print("Debe ingresar un valor positivo entre 0 y 100000")
 
     def retirar(self, retiro):
         ingreso=float(retiro)
         if retiro >= 0 and retiro <= 100000:
-            self.__cantidad -= retiro
+            self._cantidad -= retiro
         else:
             print("Debe ingresar un valor positivo entre 0 y 100000")
 
     def __str__(self):
-        return(f'Titular: {self.__titular}, Cantidad: {self.__cantidad}')
+        return(f'Titular: {self._titular}, Cantidad: {self._cantidad}')
 
 
 # Prueba del ejercicio
